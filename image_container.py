@@ -216,7 +216,7 @@ class ImageContainerView(QGraphicsView):
     #  @param self The object pointer.
     #  @param scaleFactor The factor of magnification.
     def scaleView(self, scaleFactor):
-        factor = self.matrix().scale(scaleFactor, scaleFactor).mapRect(QtCore.QRectF(0, 0, 1, 1)).width()
+        factor = self.transform().scale(scaleFactor, scaleFactor).mapRect(QtCore.QRectF(0, 0, 1, 1)).width()
         # don't make the image too small or too large        
         if factor < kScaleFactorMin or factor > kScaleFactorMax:
             return

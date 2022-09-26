@@ -367,7 +367,7 @@ class Ui_Dialog(QWidget):
     def respondToWheel(self, scale):
         self.containerViewFirstImage.scaleView(scale)
         self.containerViewSecondImage.scaleView(scale)
-        
+        print(f'respondToWheel scale: {scale}')
         # also update the UI
         self.updateInfo()
         
