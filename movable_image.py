@@ -9,8 +9,8 @@
 #
 
 # GUI
-from PyQt4 import QtCore
-from PyQt4.QtGui import QGraphicsScene
+from PyQt6 import QtCore
+from PyQt6.QtWidgets import QGraphicsScene
 
 ## MovableImage
 #
@@ -34,11 +34,11 @@ class MovableImage(QGraphicsScene):
     #  @param self The object pointer.
     #  @param event The event pointer.
     def mousePressEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
                 self.pressedButton = "Left"
                 self.dragStarted = True
         # in case somebody is still using a three-button mouse...
-        if event.button() == QtCore.Qt.RightButton:
+        if event.button() == QtCore.Qt.MouseButton.RightButton:
                 self.pressedButton = "Right"                
         
         # the position is used only for moving the image by clicking
@@ -56,14 +56,14 @@ class MovableImage(QGraphicsScene):
     #  @param self The object pointer.    
     #  @param event The event pointer.
     def mouseReleaseEvent(self, event):
-        if event.button() == QtCore.Qt.LeftButton:
+        if event.button() == QtCore.Qt.MouseButton.LeftButton:
             self.dragStarted = False
         
             # send a notification upstairs
             self.containingGraphicsView.processReleaseEvent(self)
             
         # in case somebody is still using a three-button mouse...
-        if event.button() == QtCore.Qt.RightButton:
+        if event.button() == QtCore.Qt.MouseButton.RightButton:
             # send a notification upstairs
             self.containingGraphicsView.passRightClickEvent(self)
         self.update()

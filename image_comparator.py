@@ -10,7 +10,10 @@
 #
 
 # GUI
-from PyQt4 import QtGui, QtCore
+from PyQt6 import QtGui, QtCore
+from PyQt6.QtWidgets import ( QWidget, QApplication, QDialog, QGroupBox,
+QFileDialog, QGraphicsView, QMessageBox,
+QPushButton, QLabel, QFrame, QRadioButton, QGridLayout)
 import os
 
 # cusnot class for graphics view
@@ -43,16 +46,16 @@ except AttributeError:
         return s
 
 try:
-    _encoding = QtGui.QApplication.UnicodeUTF8
+    _encoding = QApplication.UnicodeUTF8
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+        return QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
-        return QtGui.QApplication.translate(context, text, disambig)
+        return QApplication.translate(context, text, disambig)
         
 ##  Dialog-based user interface
 #
-class Ui_Dialog(QtGui.QWidget): 
+class Ui_Dialog(QWidget): 
     ## Create the UI contrlols and lay them out
     #  @param self The object pointer.
     #  @param Dialog The dialog pointer.
@@ -60,15 +63,16 @@ class Ui_Dialog(QtGui.QWidget):
         Dialog.setObjectName(_fromUtf8("Image Comparison Tool"))
         
         # get screen dimensitons for laying out the other controls
-        geometry = app.desktop().availableGeometry()
+        geometry = app.primaryScreen().availableGeometry()
+        # geometry = app.desktop().availableGeometry()
     
         # resize dialog to use all available space
         Dialog.resize(geometry.width(), geometry.height() - kMenuBarHeight)
         
         # calculate container dimensions
-        self.containerWidth = (geometry.width() - (2*kDialogMargin + kControlSpacing))/2
+        self.containerWidth = int((geometry.width() - (2*kDialogMargin + kControlSpacing))/2)
         self.containerWidthOverlay = geometry.width() - 2*kDialogMargin
-        self.containerHeight = geometry.height() - 2*kGroupHeight - kMenuBarHeight - 2*kControlSpacing
+        self.containerHeight = int(geometry.height() - 2*kGroupHeight - kMenuBarHeight - 2*kControlSpacing)
         
         # graphics view for the first image
         self.containerViewFirstImage = ImageContainerView(Dialog)
@@ -85,44 +89,44 @@ class Ui_Dialog(QtGui.QWidget):
         self.containerViewSecondImage.tag = 1
         
         ## group box 1 for control inputs
-        self.groupBox = QtGui.QGroupBox(Dialog)
+        self.groupBox = QGroupBox(Dialog)
         self.groupBox.setGeometry(QtCore.QRect(0, 0, self.containerWidth, kGroupBoxHeight))
         self.groupBox.setTitle(_fromUtf8(""))
         self.groupBox.setObjectName(_fromUtf8("groupBox"))
         
         # button for loading the first image
-        self.pushButton = QtGui.QPushButton(self.groupBox)
+        self.pushButton = QPushButton(self.groupBox)
         self.pushButton.setGeometry(QtCore.QRect(kDialogMargin, kControlSpacing, kButtonWidth, kButtonHeight))
         self.pushButton.setObjectName(_fromUtf8("pushButton"))
         
         # file path
-        self.label = QtGui.QLabel(self.groupBox)
+        self.label = QLabel(self.groupBox)
         self.label.setGeometry(QtCore.QRect(kButtonWidth + kControlSpacing + kDialogMargin, kControlSpacing, 481, kLabelHeight))
         self.label.setObjectName(_fromUtf8("label"))
         
         # image info
-        self.label_2 = QtGui.QLabel(self.groupBox)
+        self.label_2 = QLabel(self.groupBox)
         self.label_2.setGeometry(QtCore.QRect(kButtonWidth + kControlSpacing + kDialogMargin, kLabelIndent, 481, kLabelHeight))
         self.label_2.setObjectName(_fromUtf8("label_2"))
         
         ## group box 2 for control inputs
-        self.groupBox2 = QtGui.QGroupBox(Dialog)
+        self.groupBox2 = QGroupBox(Dialog)
         self.groupBox2.setGeometry(QtCore.QRect(self.containerWidth + kControlSpacing, 0, self.containerWidth, kGroupBoxHeight))
         self.groupBox2.setTitle(_fromUtf8(""))
         self.groupBox2.setObjectName(_fromUtf8("groupBox2"))
         
         # button for loading the second image
-        self.pushButton_2 = QtGui.QPushButton(self.groupBox2)
+        self.pushButton_2 = QPushButton(self.groupBox2)
         self.pushButton_2.setGeometry(QtCore.QRect(kDialogMargin, kControlSpacing, kButtonWidth, kButtonHeight))
         self.pushButton_2.setObjectName(_fromUtf8("pushButton_2"))
         
         # file path
-        self.label_3 = QtGui.QLabel(self.groupBox2)
+        self.label_3 = QLabel(self.groupBox2)
         self.label_3.setGeometry(QtCore.QRect(kButtonWidth + kControlSpacing + kDialogMargin, kControlSpacing, 481, kLabelHeight))
         self.label_3.setObjectName(_fromUtf8("label_3"))
         
         # image info
-        self.label_4 = QtGui.QLabel(self.groupBox2)
+        self.label_4 = QLabel(self.groupBox2)
         self.label_4.setGeometry(QtCore.QRect(kButtonWidth + kControlSpacing + kDialogMargin, kLabelIndent, 481, kLabelHeight))
         self.label_4.setObjectName(_fromUtf8("label_4"))
         
@@ -130,40 +134,40 @@ class Ui_Dialog(QtGui.QWidget):
         infoLabelTop = geometry.height() - kDialogMargin - kButtonHeight - kMenuBarHeight
         infoLabelWidth = geometry.width() - (kButtonWidth + kControlSpacing + kLayoutGroupWidth + 3*kDialogMargin)
         
-        self.label_5 = QtGui.QLabel(Dialog)
+        self.label_5 = QLabel(Dialog)
         self.label_5.setGeometry(QtCore.QRect(kDialogMargin, infoLabelTop, infoLabelWidth, kButtonHeight))
         self.label_5.setObjectName(_fromUtf8("label_5"))
-        self.label_5.setFrameShape(QtGui.QFrame.Panel)
+        self.label_5.setFrameShape(QFrame.Shape.Panel)
         self.label_5.setLineWidth(1)
         
         # group box for layout
-        self.groupBoxLayout = QtGui.QGroupBox(Dialog)
+        self.groupBoxLayout = QGroupBox(Dialog)
         self.groupBoxLayout.setGeometry(QtCore.QRect(kDialogMargin + infoLabelWidth + kControlSpacing, infoLabelTop, kLayoutGroupWidth, kGroupBoxHeight))
         self.groupBoxLayout.setTitle(_fromUtf8(""))
         self.groupBoxLayout.setObjectName(_fromUtf8("groupBoxLayout"))
         
         # layout label
-        self.label_6 = QtGui.QLabel(self.groupBoxLayout)
+        self.label_6 = QLabel(self.groupBoxLayout)
         self.label_6.setGeometry(QtCore.QRect(0, 0, 200, kLabelHeight))
         self.label_6.setObjectName(_fromUtf8("label_6"))
         
-        layoutRB = QtGui.QGridLayout()
+        layoutRB = QGridLayout()
         self.groupBoxLayout.setLayout(layoutRB)
 
-        radiobutton = QtGui.QRadioButton("Side-by-side")
+        radiobutton = QRadioButton("Side-by-side")
         radiobutton.setChecked(True)
         radiobutton.layoutType = "Side-by-side"
         radiobutton.toggled.connect(self.radioButtonClicked)
         layoutRB.addWidget(radiobutton, 0, 0)
 
-        radiobutton = QtGui.QRadioButton("Overlay")
+        radiobutton = QRadioButton("Overlay")
         radiobutton.layoutType = "Overlay"
         radiobutton.toggled.connect(self.radioButtonClicked)
         layoutRB.addWidget(radiobutton, 0, 1)
 
         
         # clear button: remove images and clean up everything
-        self.pushButton_3 = QtGui.QPushButton(Dialog)
+        self.pushButton_3 = QPushButton(Dialog)
         self.pushButton_3.setGeometry(QtCore.QRect(geometry.width() - kDialogMargin - kButtonWidth, infoLabelTop, kButtonWidth, kButtonHeight))
         self.pushButton_3.setObjectName(_fromUtf8("pushButton_3"))
         
@@ -243,21 +247,22 @@ class Ui_Dialog(QtGui.QWidget):
     #  @param imageId An integer tag indicating where the image should go to.
     def setImage(self, Dialog, imageId=0):
         # get foldername from dialog
-        imgFilename = QtGui.QFileDialog.getOpenFileName(Dialog, "Select the first image", self.workingDir)
+        imgFilename = QFileDialog.getOpenFileName(Dialog, "Select the first image", self.workingDir)[0]
         
         # set the working directory
-        self.workingDir = os.path.dirname(os.path.abspath(imgFilename))        
+        print(imgFilename)
+        self.workingDir = os.path.dirname(os.path.abspath(imgFilename[0]))
         
         if imageId == 0:
             # load the first image
             self.label.setText(imgFilename)
-                
+
             # set the scene
             self.imageSize = self.containerViewFirstImage.loadSceneForImage(imgFilename)  
             self.label_2.setText(str(self.imageSize.width()) + 'x' + str(self.imageSize.height()) + ' pixels')
                 
             # this one can be dragged around
-            self.containerViewFirstImage.setDragMode(QtGui.QGraphicsView.ScrollHandDrag)
+            self.containerViewFirstImage.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
                 
             # now we can load the second image
             self.pushButton_2.setEnabled(True)
@@ -279,18 +284,18 @@ class Ui_Dialog(QtGui.QWidget):
                     return
                 else:
                     # display warning
-                    msgBox = QtGui.QMessageBox( self )
-                    msgBox.setIcon( QtGui.QMessageBox.Information )
+                    msgBox = QMessageBox( self )
+                    msgBox.setIcon( QMessageBox.Information )
                     msgBox.setText(kInfoSizeErrorTitle)
     
                     msgBox.setInformativeText(kInfoSizeError)
-                    msgBox.addButton( QtGui.QMessageBox.Yes )
-                    msgBox.addButton( QtGui.QMessageBox.No )
+                    msgBox.addButton( QMessageBox.Yes )
+                    msgBox.addButton( QMessageBox.No )
     
-                    msgBox.setDefaultButton( QtGui.QMessageBox.No ) 
+                    msgBox.setDefaultButton( QMessageBox.No ) 
                     ret = msgBox.exec_()
     
-                    if ret == QtGui.QMessageBox.No:
+                    if ret == QMessageBox.No:
                         # clear the image and abandon
                         self.containerViewSecondImage.clearContainer()
                         self.second_image_size = None
@@ -307,7 +312,7 @@ class Ui_Dialog(QtGui.QWidget):
             self.label_4.setText(str(self.secondImageSize.width()) + 'x' + str(self.secondImageSize.height()) + ' pixels')
             
             # this too can be dragged around
-            self.containerViewSecondImage.setDragMode(QtGui.QGraphicsView.ScrollHandDrag)
+            self.containerViewSecondImage.setDragMode(QGraphicsView.DragMode.ScrollHandDrag)
             
             # there must be two images available now
             self.bothLoaded = True    
@@ -429,13 +434,13 @@ if __name__ == "__main__":
     import sys
     
     # load GUI
-    app = QtGui.QApplication(sys.argv)
+    app = QApplication(sys.argv)
     
-    Dialog = QtGui.QDialog()
+    Dialog = QDialog()
     ui = Ui_Dialog()
     ui.setupUi(Dialog)
     Dialog.show()
     
-    sys.exit(app.exec_())
+    sys.exit(app.exec())
 
     # done

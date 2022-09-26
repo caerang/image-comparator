@@ -9,7 +9,8 @@
 #
 
 # GUI
-from PyQt4 import QtCore, QtGui
+from PyQt6 import QtCore, QtGui
+from PyQt6.QtWidgets import QGraphicsView
 
 # custom class for image
 from movable_image import MovableImage
@@ -25,7 +26,7 @@ kScaleFactorMax = 150.0
 #
 #  Contains and manipulates an instance of MovableImage.
 #  Also passes events to the main dialog, and gets directions for manipulation.
-class ImageContainerView(QtGui.QGraphicsView):
+class ImageContainerView(QGraphicsView):
     ## The constructor.
     #  @param self The object pointer.
     #  @param parent The ImageContainer that contains the object.
@@ -139,7 +140,7 @@ class ImageContainerView(QtGui.QGraphicsView):
     #  @param event The event pointer.
     def wheelEvent(self, event):
         # this is the multiplication factor of scale
-        scale = math.pow(2.0, -event.delta() / 240.0)
+        scale = math.pow(2.0, -event.angleDelta().x() / 240.0)
         # use directly for enlarging and shrinking
         self.containerDialog.respondToWheel(scale)
         # absolute scale for dragging
